@@ -10,23 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "printf.h"
+#include "ft_printf.h"
 //#include <stdio.h>
-/*
-static int	ft_strncmp(const char *s1, const char *s2, size_t n)
-{
-	size_t	i;
 
-	i = 0;
-	while ((s1[i] || s2[i]) && i < n)
-	{
-		if ((unsigned char)s1[i] != (unsigned char)s2[i])
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		i++;
-	}
-	return (0);
-} */
-
+/* %c */
 int print_char(va_list arg, const char *str)
 {
 	char c;
@@ -37,6 +24,7 @@ int print_char(va_list arg, const char *str)
 	return (1);
 }
 
+/* %s */
 int	print_str(va_list arg, const char *str)
 {
 	int	len;
@@ -50,13 +38,58 @@ int	print_str(va_list arg, const char *str)
 		len++;
 		s++;
 	}
-	str+= 2;
+	str += 2;
 	return (len);
+}
+
+// %d
+static void	print_nbr(long n)
+{
+	char	c;
+
+	if (n >= 0 && n <= 9)
+	{
+		c = n + '0';
+		write(1, &c, 1);
+	}
+	else
+	{
+		print_nbr(n / 10);
+		print_nbr(n % 10);
+	}
 }
 
 int print_dec(va_list arg, const char *str)
 {
+	long	nb;
+	char	minus;
+	int		len;
 
+	nb = va_arg(arg, int);
+	len = 0;
+	if (nb < 0)
+	{
+		minus = '-';
+		write(1, &minus, 1);
+		nb = -nb;
+		len = 1;
+	}
+	print_nbr(nb);
+	str += 2;
+	while(nb)
+	{
+		nb = nb / 10;
+		len++;
+	}
+	return (len);
+}
+
+/*  %%  */
+int print_per(const char *str)
+{
+	write(1, "%", 1);
+	str += 2;
+	return (1);
 }
 
 static int format(va_list arg, const char *str)
@@ -66,19 +99,19 @@ static int format(va_list arg, const char *str)
 	else if (*str == 's')
 		return (print_str(arg, str)); /*
 	else if (*str == 'p')
-		return (print_ptr()); */ 
+		return (print_ptr()); */
 	else if (*str == 'd')
-		return (print_dec()); /*
+		return (print_dec(arg, str)); 
 	else if (*str == 'i')
-		return (print_int());
+		return (print_dec(arg, str));
 	else if (*str == 'u')
-		return (print_uint());
+		return (print_dec(arg, str));
 	else if (*str == 'x')
-		return (print_hex());
+		return (print_dec(arg, str));
 	else if (*str == 'X')
-		return (print_uhex());
+		return (print_dec(arg, str));
 	else if (*str == '%')
-		return (print_per()); */
+		return (print_per(str));
 	return (0);
 }
 

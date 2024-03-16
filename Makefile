@@ -2,12 +2,16 @@ LIBC = ft_printf.c
 
 SRC = ${LIBC}
 
-OBJ = ${SRC:.c:.o}
+OBJ = ${SRC:.c=.o}
 
 NAME = libftprintf.a
 
+CC = gcc
+
+CFLAGS = -Werror -Wextra -Wall
+
 $(NAME) : ${OBJ}
-		ar -rcs $@ ${OBJS}
+		ar -rcs $@ ${OBJ}
 
 all : ${NAME}
 
