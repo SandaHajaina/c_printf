@@ -18,5 +18,13 @@
 # include <unistd.h>
 
 int	ft_printf(const char *str, ...);
+int	print_str(va_list arg, const char **str);
+void put_str(char *s);
+int	print_hex(unsigned long long nb, int length, char c);
+int	print_ptr(va_list arg, const char **str);
+int	print_dec(va_list arg, const char **str);
+int print_uint(va_list arg, const char **str);
+int print_x(va_list arg, const char **str);
+int print_X(va_list arg, const char **str);
 
 #endif
