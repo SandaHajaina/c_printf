@@ -1,4 +1,4 @@
-LIBC = ft_printf.c
+LIBC = ft_printf.c ft_print_hex.c ft_print_nbr.c ft_print_str.c
 
 SRC = ${LIBC}
 
